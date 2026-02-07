@@ -1,4 +1,6 @@
+# =========================
 # Data directories (large files)
+# =========================
 data/kitti/
 data/KITTI/
 data/raw/
@@ -6,31 +8,75 @@ data/processed/
 *.bin
 *.pcd
 
-# Keep plots and documentation assets
-!plots/*.png
-!docs/assets/
+# =========================
+# Outputs / generated artifacts (RECURSIVE)
+# Ignore everything under outputs, then allow back the small/report artifacts you want.
+# =========================
+outputs/**
 
+# Keep folder placeholders
+!outputs/.gitkeep
+!outputs/**/.gitkeep
+
+# Keep reports / configs / stats inside outputs
+!outputs/**/*.md
+!outputs/**/*.json
+!outputs/**/*.yaml
+!outputs/**/*.yml
+
+# Keep output images (optional, but you had lots of pngs)
+!outputs/**/*.png
+
+# Explicitly keep videos ignored everywhere under outputs
+outputs/**/*.mp4
+outputs/**/*.avi
+outputs/**/*.mov
+outputs/**/*.mkv
+
+# If you don't want logs tracked, keep them ignored (recommended)
+outputs/**/*.log
+
+# =========================
+# Plots and documentation assets
+# =========================
+plots/**
+!plots/**/*.png
+
+docs/assets/**
+# If you want all assets kept, do nothing else.
+# If you want to ignore everything else under docs/assets except images, uncomment:
+# docs/assets/**
+# !docs/assets/**/*.png
+# !docs/assets/**/*.jpg
+# !docs/assets/**/*.jpeg
+# !docs/assets/**/*.svg
+
+# =========================
 # Model weights
+# =========================
 *.pth
 *.pt
 *.onnx
 *.engine
 weights/
 
+# =========================
 # Archives
+# =========================
 *.zip
 *.tar
 *.tar.gz
 *.rar
 
-# Output directories (keep markdown reports)
-outputs/*.avi
-outputs/*.mp4
-outputs/*.json
+# =========================
+# Results / logs (top-level)
+# =========================
 results/
 logs/
 
+# =========================
 # Python
+# =========================
 __pycache__/
 *.py[cod]
 *$py.class
@@ -52,13 +98,17 @@ wheels/
 .installed.cfg
 *.egg
 
+# =========================
 # Virtual environments
+# =========================
 venv/
 env/
 ENV/
 .venv/
 
+# =========================
 # IDE
+# =========================
 .idea/
 .vscode/
 *.swp
@@ -68,21 +118,29 @@ ENV/
 .pydevproject
 .settings/
 
+# =========================
 # Jupyter
+# =========================
 .ipynb_checkpoints/
 *.ipynb
 
+# =========================
 # OS
+# =========================
 .DS_Store
 Thumbs.db
 desktop.ini
 
-# Testing
+# =========================
+# Testing / Coverage
+# =========================
 .pytest_cache/
 .coverage
 htmlcov/
 .tox/
 .nox/
 
+# =========================
 # MyPy
+# =========================
 .mypy_cache/
