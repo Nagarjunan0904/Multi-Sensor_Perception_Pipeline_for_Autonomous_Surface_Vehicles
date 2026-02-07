@@ -1,0 +1,72 @@
+# Sensor Configuration
+# ====================
+
+# Camera settings (KITTI left color camera - cam2)
+camera:
+  name: "KITTI_cam2"
+  type: "pinhole"
+
+  # Image dimensions
+  image_width: 1242
+  image_height: 375
+
+  # Intrinsic parameters (from typical KITTI calibration)
+  intrinsics:
+    fx: 721.5377  # focal length x
+    fy: 721.5377  # focal length y
+    cx: 609.5593  # principal point x
+    cy: 172.854   # principal point y
+
+  # Distortion coefficients (KITTI images are rectified)
+  distortion:
+    model: "none"  # none, radtan, equidistant
+    coefficients: [0.0, 0.0, 0.0, 0.0, 0.0]
+
+  # Color settings
+  color_format: "BGR"  # BGR, RGB
+  normalize: true
+  mean: [0.485, 0.456, 0.406]
+  std: [0.229, 0.224, 0.225]
+
+# LiDAR settings (KITTI Velodyne HDL-64E)
+lidar:
+  name: "KITTI_velodyne"
+  type: "velodyne_hdl64e"
+
+  # Sensor specifications
+  channels: 64
+  range_min: 0.5  # meters
+  range_max: 120.0  # meters
+  vertical_fov: [-24.8, 2.0]  # degrees [min, max]
+  horizontal_fov: [-180.0, 180.0]  # degrees
+  rotation_rate: 10  # Hz
+
+  # Point cloud format
+  point_format: "xyzi"  # x, y, z, intensity
+  intensity_scale: 1.0
+
+  # Preprocessing
+  remove_ground: false
+  ground_height_threshold: -1.5  # meters
+  downsample: false
+  voxel_size: 0.1  # meters
+
+# Sensor synchronization
+synchronization:
+  enabled: true
+  method: "timestamp"  # timestamp, frame_id
+  max_time_diff: 0.05  # seconds
+  interpolate: false
+
+# Extrinsic calibration (LiDAR to Camera transformation)
+# This is loaded from KITTI calibration files per-frame
+extrinsics:
+  source_frame: "velodyne"
+  target_frame: "cam2"
+  # Default transformation (overwritten by calib files)
+  rotation: [
+    [0.0, -1.0, 0.0],
+    [0.0, 0.0, -1.0],
+    [1.0, 0.0, 0.0]
+  ]
+  translation: [0.0, 0.0, 0.0]

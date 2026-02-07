@@ -1,0 +1,27 @@
+# Core dependencies
+numpy>=1.21.0
+opencv-python>=4.8.0
+matplotlib>=3.7.0
+pyyaml>=6.0
+
+# Deep Learning - Object Detection
+ultralytics>=8.0.0  # YOLOv8
+torch>=2.0.0
+torchvision>=0.15.0
+
+# Point Cloud Processing
+open3d>=0.17.0
+
+# Utilities
+tqdm>=4.65.0
+scipy>=1.10.0
+Pillow>=9.5.0
+
+# Testing
+pytest>=7.3.0
+pytest-cov>=4.1.0
+
+# Development
+black>=23.0.0
+flake8>=6.0.0
+isort>=5.12.0

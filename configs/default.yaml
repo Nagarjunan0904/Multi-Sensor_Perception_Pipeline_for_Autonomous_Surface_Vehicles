@@ -1,0 +1,216 @@
+# =============================================================================
+# Multi-Sensor Perception Pipeline Configuration
+# =============================================================================
+# This is the main configuration file for the perception pipeline.
+# All parameters can be overridden via command-line arguments.
+
+# -----------------------------------------------------------------------------
+# Project Information
+# -----------------------------------------------------------------------------
+project:
+  name: "Multi-Sensor Perception Pipeline"
+  version: "1.0.0"
+
+# -----------------------------------------------------------------------------
+# Data Configuration
+# -----------------------------------------------------------------------------
+data:
+  # Path to KITTI dataset root directory
+  root: "data/kitti"
+
+  # Dataset split: "training" or "testing"
+  split: "training"
+
+  # Directory names within split folder
+  image_dir: "image_2"
+  lidar_dir: "velodyne"
+  calib_dir: "calib"
+  label_dir: "label_2"
+
+  # Image parameters
+  image_width: 1242
+  image_height: 375
+
+# -----------------------------------------------------------------------------
+# Detector Configuration
+# -----------------------------------------------------------------------------
+detector:
+  # Model variant: yolov8n, yolov8s, yolov8m, yolov8l, yolov8x
+  model: "yolov8m"
+
+  # Path to custom weights (null for pretrained COCO)
+  weights: null
+
+  # Detection thresholds
+  confidence_threshold: 0.3
+  iou_threshold: 0.45
+
+  # Classes to detect (COCO IDs: 0=person, 1=bicycle, 2=car, 3=motorcycle, 5=bus, 7=truck)
+  classes: [0, 1, 2, 3, 5, 7]
+
+  # Use half precision (FP16) for faster inference
+  half_precision: false
+
+# -----------------------------------------------------------------------------
+# Depth Estimation Configuration
+# -----------------------------------------------------------------------------
+depth:
+  # Aggregation method: median, mean, closest, percentile_25, trimmed_mean, mode_region
+  method: "median"
+
+  # Minimum LiDAR points required for valid depth estimate
+  min_points: 5
+
+  # Valid depth range in meters
+  min_depth: 0.5
+  max_depth: 80.0
+
+  # Bounding box expansion factor for point search (0 = no expansion)
+  search_expansion: 0.05
+
+  # Ground plane filtering
+  filter_ground: true
+  ground_height: -1.5  # LiDAR Z coordinate for ground
+
+  # Point clustering for multiple objects
+  use_clustering: false
+  cluster_eps: 0.5
+
+# -----------------------------------------------------------------------------
+# 3D Bounding Box Configuration
+# -----------------------------------------------------------------------------
+bbox3d:
+  # Use class-based dimension priors
+  use_prior_dimensions: true
+
+  # Default dimensions per class [length, width, height] in meters
+  default_dimensions:
+    Car: [3.88, 1.63, 1.53]
+    Van: [5.08, 1.90, 2.30]
+    Truck: [10.0, 2.50, 3.20]
+    Pedestrian: [0.88, 0.65, 1.77]
+    Cyclist: [1.76, 0.60, 1.73]
+
+  # Rotation estimation method: none, heuristic
+  orientation_method: "heuristic"
+
+  # LiDAR-based refinement
+  refine_with_lidar: false
+
+# -----------------------------------------------------------------------------
+# Outlier Filtering Configuration
+# -----------------------------------------------------------------------------
+outlier_filter:
+  # Enable outlier filtering
+  enabled: true
+
+  # Depth range filter
+  depth_range: [0.5, 80.0]
+
+  # Minimum detection confidence
+  min_confidence: 0.3
+
+  # Minimum box area (pixels squared)
+  min_box_area: 500
+
+# -----------------------------------------------------------------------------
+# Visualization Configuration
+# -----------------------------------------------------------------------------
+viz:
+  # Enable visualization
+  enabled: true
+
+  # Output directory
+  output_dir: "outputs/pipeline"
+
+  # Save options
+  save_images: false
+  save_video: true
+  video_fps: 10
+  video_name: "pipeline_output.mp4"
+
+  # Display options
+  show_display: true
+  display_scale: 1.0
+
+  # Image overlay options
+  show_2d_boxes: true
+  show_3d_boxes: true
+  show_lidar_points: true
+  show_depth_text: true
+  box_thickness: 2
+  font_scale: 0.5
+
+  # LiDAR projection options
+  lidar_point_size: 2
+  lidar_depth_range: [0.5, 60.0]
+  lidar_alpha: 0.7
+
+  # BEV visualization options
+  bev:
+    enabled: true
+    x_range: [-30, 30]
+    y_range: [0, 60]
+    resolution: 0.1
+    show_pointcloud: true
+    show_boxes: true
+    show_legend: true
+
+  # Multi-panel layout
+  layout: "side_by_side"  # side_by_side, stacked, image_only, bev_only
+  panel_gap: 10
+
+  # Metrics overlay
+  show_metrics: true
+  metrics_position: "top_left"
+
+# -----------------------------------------------------------------------------
+# Logging Configuration
+# -----------------------------------------------------------------------------
+logging:
+  # Log level: DEBUG, INFO, WARNING, ERROR
+  level: "INFO"
+
+  # Log file path (null for no file logging)
+  file: "outputs/pipeline/pipeline.log"
+
+  # Console output
+  console: true
+
+  # Log format
+  format: "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+
+# -----------------------------------------------------------------------------
+# Performance Configuration
+# -----------------------------------------------------------------------------
+performance:
+  # Inference device: cuda, cuda:0, cuda:1, cpu
+  device: "cuda"
+
+  # Batch size for detection (1 = process one frame at a time)
+  batch_size: 1
+
+  # Number of data loading workers
+  num_workers: 4
+
+  # Warmup inference before timing
+  warmup: true
+
+  # Skip frames for faster processing (1 = process all frames)
+  frame_skip: 1
+
+# -----------------------------------------------------------------------------
+# Evaluation Configuration (optional)
+# -----------------------------------------------------------------------------
+eval:
+  # Enable evaluation against ground truth
+  enabled: false
+
+  # IoU thresholds for AP calculation
+  iou_thresholds: [0.5, 0.7]
+
+  # Distance bins for range-based evaluation (meters)
+  distance_bins: [0, 20, 40, 60, 80]
+
+  # Classes to evaluate
+  classes: ["Car", "Pedestrian", "Cyclist"]

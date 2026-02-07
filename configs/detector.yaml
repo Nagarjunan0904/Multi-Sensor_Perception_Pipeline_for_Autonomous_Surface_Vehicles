@@ -1,0 +1,67 @@
+# YOLOv8 Detector Configuration
+# ==============================
+
+# Model settings
+model:
+  name: "yolov8m"  # yolov8n, yolov8s, yolov8m, yolov8l, yolov8x
+  weights: "yolov8m.pt"  # pretrained weights or custom path
+  task: "detect"  # detect, segment, pose
+
+# Inference settings
+inference:
+  confidence_threshold: 0.5
+  iou_threshold: 0.45  # NMS IoU threshold
+  max_detections: 100
+  agnostic_nms: false  # class-agnostic NMS
+
+# Device settings
+device: "cuda"  # cuda, cpu, or cuda:0
+half_precision: false  # FP16 inference
+
+# Input preprocessing
+input:
+  image_size: 640  # input size (square)
+  letterbox: true  # maintain aspect ratio
+  auto_augment: false
+
+# Class filtering (KITTI relevant classes)
+# Map COCO classes to KITTI classes
+classes:
+  filter_enabled: true
+  # COCO class IDs to keep
+  keep_ids: [0, 1, 2, 3, 5, 7]  # person, bicycle, car, motorcycle, bus, truck
+
+  # Mapping from COCO to KITTI classes
+  mapping:
+    0: "Pedestrian"   # person -> Pedestrian
+    1: "Cyclist"      # bicycle -> Cyclist
+    2: "Car"          # car -> Car
+    3: "Cyclist"      # motorcycle -> Cyclist
+    5: "Car"          # bus -> Car (treated as large vehicle)
+    7: "Car"          # truck -> Car (treated as large vehicle)
+
+# Post-processing
+postprocess:
+  # Minimum box dimensions (pixels)
+  min_width: 20
+  min_height: 20
+
+  # Score calibration
+  calibrate_scores: false
+
+  # Tracking (optional)
+  tracking:
+    enabled: false
+    tracker: "bytetrack"  # bytetrack, botsort
+    track_buffer: 30
+
+# Augmentation (for training/evaluation)
+augmentation:
+  enabled: false
+  horizontal_flip: 0.5
+  vertical_flip: 0.0
+  rotation: 0.0
+  scale: [0.8, 1.2]
+  translate: 0.1
+  mosaic: 0.0
+  mixup: 0.0
