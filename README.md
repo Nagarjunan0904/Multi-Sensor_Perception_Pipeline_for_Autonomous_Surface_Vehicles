@@ -287,9 +287,9 @@ If you use this work, please cite:
 ```bibtex
 @software{multisensor_perception_2026,
   title={Multi-Sensor Perception Pipeline for Autonomous Vehicles},
-  author={Your Name},
+  author={Nagarjunan Saravanan},
   year={2026},
-  url={https://github.com/yourusername/multi-sensor-perception}
+  url={https://github.com/Nagarjunan0904/Multi-Sensor_Perception_Pipeline_for_Autonomous_Surface_Vehicles}
 }
 ```
 
